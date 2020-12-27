@@ -1,15 +1,32 @@
-import { EventEmitter } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
+import { Ingredient } from "../shared/ingredient.model";
+import { ShoppingListService } from "../shopping-list/shopping-list.service";
 import { Recipe } from "./recipe.model";
 
+@Injectable()
 export class RecipeService {
     recipeSelected = new EventEmitter<Recipe>();
 
     private recipes: Recipe[] = [
-        new Recipe('A test recipe','this is a test','https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563'),
-        new Recipe('Another test recipe','this is a test','https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?webp=true&quality=90&resize=620%2C563')
+        new Recipe('Tasty Schnitzel','A super tasty Schnitzel - just awesome!','https://www.thespruceeats.com/thmb/dFLHcwFFtDguBZGylUlDN8KaNaw=/960x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/wiener-schnitzel-recipe-1447089-Hero-5b587d6c46e0fb0071b0059d.jpg', 
+        [
+            new Ingredient('Meat', 1),
+            new Ingredient('French fires', 20)
+        ]),
+        new Recipe('Big Fat Burger','What else you need to say?','https://www.chefarena.ro/media/Burger-de-vita.jpg', 
+        [
+            new Ingredient('Buns', 2),
+            new Ingredient('Meat', 1)
+        ])
     ];
+
+    constructor(private slService: ShoppingListService) {}
 
     getRecipes() {
         return this.recipes.slice();
+    }
+
+    addIngredientsToShoppingList(ingredients: Ingredient[]) {
+        this.slService.addIngredients(ingredients);
     }
 }
